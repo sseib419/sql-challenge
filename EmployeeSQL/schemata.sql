@@ -1,33 +1,40 @@
 CREATE TABLE departments (
-	Dept_Num VARCHAR(4) NOT NULL PRIMARY KEY,
-	Dept_Name VARCHAR(30) NOT NULL
+	dept_no VARCHAR(4) NOT NULL PRIMARY KEY,
+	dept_name VARCHAR(30) NOT NULL
 );
 
 SELECT * FROM departments;
 
-CREATE TABLE department_employees (
-	employee_num INT NOT NULL,
-	dept_num VARCHAR(4) NOT NULL,
-	PRIMARY KEY (employee_num, dept_num)
-	
+
+CREATE TABLE dept_emp (
+	emp_no INT NOT NULL,
+	dept_no VARCHAR(4) NOT NULL,
+	PRIMARY KEY (employee_no, dept_no)
+	FOREIGN KEY (dept_no) REFERENCES departments(dept_no)
 	);
 
-SELECT * FROM department_employees;
+SELECT * FROM dept_emp;
+
 
 CREATE TABLE dept_manager (
-	dept_num VARCHAR(4) NOT NULL,
+	dept_no VARCHAR(4) NOT NULL,
 	emp_no INT NOT NULL PRIMARY KEY,
-	FOREIGN KEY (dept_num) REFERENCES departments(dept_num)
+	FOREIGN KEY (dept_no) REFERENCES departments(dept_no)
+	FOREIGN KEY (emp_no) REFERENCES dept_emp(emp_no)
 );
 
 SELECT * FROM dept_manager;
 
+
 CREATE TABLE salaries(
 	emp_no INT NOT NULL PRIMARY KEY,
 	salary INT NOT NULL
+	FOREIGN KEY (emp_no) REFERENCES dept_emp(emp_no)
+	
 );
 
 SELECT * FROM salaries;
+
 
 CREATE TABLE titles (
 	title_id VARCHAR(5) NOT NULL PRIMARY KEY,
@@ -35,6 +42,7 @@ CREATE TABLE titles (
 );
 
 SELECT * FROM titles;
+
 
 CREATE TABLE employees(
 	emp_no INT NOT NULL PRIMARY KEY,
@@ -45,6 +53,7 @@ CREATE TABLE employees(
 	sex VARCHAR(1) NOT NULL,
 	hire_date DATE NOT NULL,
 	FOREIGN KEY (emp_title_ID) REFERENCES titles(title_id)
+	FOREIGN KEY (emp_no) REFERENCES dept_emp(emp_no)
 );
 
 SELECT * FROM employees
